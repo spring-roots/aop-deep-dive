@@ -1,5 +1,6 @@
 package io.pivotal.springroots.aspects;
 
+@Despicable
 public class Human implements You {
 	private final String name;
 

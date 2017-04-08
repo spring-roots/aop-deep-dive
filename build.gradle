@@ -19,8 +19,8 @@ apply plugin: 'org.junit.platform.gradle.plugin'
 
 
 dependencies {
-    compile 'org.assertj:assertj-core:3.6.2'
     compile 'org.springframework:spring-context:4.3.7.RELEASE'
+    testCompile 'org.assertj:assertj-core:3.6.2'
     testCompile "org.junit.jupiter:junit-jupiter-api:5.0.0-${milestone}"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:5.0.0-${milestone}"
 }

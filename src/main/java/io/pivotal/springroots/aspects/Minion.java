@@ -1,5 +1,6 @@
 package io.pivotal.springroots.aspects;
 
+@Despicable
 public class Minion implements Me {
 	private final String name;
 

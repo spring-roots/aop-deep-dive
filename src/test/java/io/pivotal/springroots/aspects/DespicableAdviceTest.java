@@ -3,6 +3,7 @@ package io.pivotal.springroots.aspects;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.aop.framework.ProxyFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,5 +40,21 @@ public class DespicableAdviceTest {
 
 		assertThat(despicableYou.name()).isEqualTo("Despicable Gru");
 		assertThat(despicableYou.claim("the Statue of Liberty")).isEqualTo("I, Despicable Gru, have stolen the Statue of Liberty!");
+	}
+
+	@Test
+	@DisplayName("You and Me are despicable beans.")
+	public void yieldsDespicableYouAndMeBeans() {
+		AnnotationConfigApplicationContext appCtx = new AnnotationConfigApplicationContext();
+		appCtx.register(DespicableConfig.class);
+		appCtx.refresh();
+
+		You you = appCtx.getBean(You.class);
+		Me me = appCtx.getBean(Me.class);
+
+		assertThat(you.name()).isEqualTo("Despicable Gru");
+		assertThat(you.claim("the Statue of Liberty")).isEqualTo("I, Despicable Gru, have stolen the Statue of Liberty!");
+		assertThat(me.name()).isEqualTo("Despicable Kevin");
+		assertThat(me.greet("World")).isEqualTo("Hello, World, it is I, Despicable Kevin!");
 	}
 }
