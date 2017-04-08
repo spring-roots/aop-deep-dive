@@ -9,13 +9,15 @@ public class Despicable implements Me {
 
 	@Override
 	public String name() {
-		return "Despicable " + delegate.name();
+		return makeDespicable(delegate.name(), delegate.name());
 	}
 
 	@Override
 	public String greet(String other) {
-		StringBuilder greeting = new StringBuilder(delegate.greet(other));
-		greeting.insert(greeting.indexOf(delegate.name()), "Despicable ");
-		return greeting.toString();
+		return makeDespicable(delegate.greet(other), delegate.name());
+	}
+
+	private String makeDespicable(String string, String name) {
+		return string.replaceAll(name, "Despicable " + name);
 	}
 }
