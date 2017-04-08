@@ -1,5 +1,6 @@
 package io.pivotal.springroots.aspects;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.aop.framework.ProxyFactory;
@@ -22,5 +23,22 @@ public class DespicableAdviceTest {
 
 		assertThat(despicableMe.name()).isEqualTo("Despicable Kevin");
 		assertThat(despicableMe.greet("World")).isEqualTo("Hello, World, it is I, Despicable Kevin!");
+	}
+
+	@Test
+	@DisplayName("Advised You is despicable.")
+	public void makesYouDespicable() {
+		You you = new Human("Gru");
+
+		ProxyFactory despicabilityFactory = new ProxyFactory();
+		despicabilityFactory.setTarget(you);
+		despicabilityFactory.addAdvice(new DespicableAdvice(you.name()));
+		You despicableYou = (You) despicabilityFactory.getProxy();
+
+		assertThat(you.name()).isEqualTo("Gru");
+		assertThat(you.claim("the Statue of Liberty")).isEqualTo("I, Gru, have stolen the Statue of Liberty!");
+
+		assertThat(despicableYou.name()).isEqualTo("Despicable Gru");
+		assertThat(despicableYou.claim("the Statue of Liberty")).isEqualTo("I, Despicable Gru, have stolen the Statue of Liberty!");
 	}
 }
