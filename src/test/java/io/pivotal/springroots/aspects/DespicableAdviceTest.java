@@ -1,6 +1,5 @@
 package io.pivotal.springroots.aspects;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.aop.framework.ProxyFactory;
@@ -15,7 +14,7 @@ public class DespicableAdviceTest {
 
 		ProxyFactory despicabilityFactory = new ProxyFactory();
 		despicabilityFactory.setTarget(me);
-		despicabilityFactory.addAdvice(new DespicableAdvice(me.name()));
+		despicabilityFactory.addAdvice(new DespicableAdvice());
 		Me despicableMe = (Me) despicabilityFactory.getProxy();
 
 		assertThat(me.name()).isEqualTo("Kevin");
@@ -32,7 +31,7 @@ public class DespicableAdviceTest {
 
 		ProxyFactory despicabilityFactory = new ProxyFactory();
 		despicabilityFactory.setTarget(you);
-		despicabilityFactory.addAdvice(new DespicableAdvice(you.name()));
+		despicabilityFactory.addAdvice(new DespicableAdvice());
 		You despicableYou = (You) despicabilityFactory.getProxy();
 
 		assertThat(you.name()).isEqualTo("Gru");
