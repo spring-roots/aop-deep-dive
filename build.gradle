@@ -16,6 +16,7 @@ repositories {
 
 dependencies {
     compile 'org.assertj:assertj-core:3.6.2'
+    compile 'org.springframework:spring-context:4.3.7.RELEASE'
     testCompile 'org.junit.jupiter:junit-jupiter-api:5.0.0-M4'
     testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.0.0-M4'
 }
