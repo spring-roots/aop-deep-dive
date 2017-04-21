@@ -341,5 +341,109 @@ Indeed, the Application Context can be configured to generate proxies automatica
 
 1. Find the implementation of `DefaultAdvisorAutoProxyCreator#createProxy()`.  Do you see any familiar chunks of code?
 
+1. What other pointcut implementations are there?  (review implementations of `Pointcut` [ [src](https://github.com/spring-projects/spring-framework/blob/master/spring-aop/src/main/java/org/springframework/aop/Pointcut.java) | [javadoc](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/aop/Pointcut.html) ])
 
+1. Replace explicitly registering an Auto Proxy creator with an annotation enabling the Auto-Proxy feature:
+
+    Include AspectJ's `aspectjweaver`.  This is _only_ to allow us to use AspectJ's annotations — Spring directly supports recognizing and interpreting these annotations (such as those used by `AbstractAspectJAdvisorFactory` [ [src](https://github.com/spring-projects/spring-framework/blob/master/spring-aop/src/main/java/org/springframework/aop/aspectj/annotation/AbstractAspectJAdvisorFactory.java) | [javadoc](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/aop/aspectj/annotation/AspectJAdvisorFactory.html) ]); we're not using AspectJ's compile-time weaving (yet).
+
+    **`build.gradle`**
+    ```groovy
+    dependencies {
+        ...
+        compile 'org.aspectj:aspectjweaver:1.8.10'
+    }
+    ```
+
+    ... and annotate the Spring config to enable this more feature-rich Auto Proxy creator:
+
+    **`DespicableConfig.java`**
+    ```java
+    @Configuration
+    @EnableAspectJAutoProxy
+    public class DespicableConfig {
+        @Bean
+        public You you() {
+            return new Human("Gru");
+        }
+
+        @Bean
+        public Me me() {
+            return new Minion("Kevin");
+        }
+
+        @Bean
+        public DefaultPointcutAdvisor adviseDespicableClasses() {
+            return new DefaultPointcutAdvisor(
+                new AnnotationMatchingPointcut(Despicable.class, true),
+                new DespicableAdvice());
+        }
+    }
+    ```
+    (notice that the annotation has replaced the `DefaultAdvisorAutoProxyCreator`; digging into `EnableAspectJAutoProxy` and you'll find a replacement `...AutoProxyCreator`).
+
+1. Declare `DespicableAdvice` an aspect:
+
+    So that we can continue to use `DespicableAdvice`, we'll make a copy of it and turn it into Advice:
+
+    **`DespicableAspect.java`**
+    ```java
+    @Aspect
+    public class DespicableAspect {
+
+        @Around("@target(io.pivotal.springroots.aspects.Despicable)")
+        public Object makeDespicable(ProceedingJoinPoint pjp) throws Throwable {
+            Object result = pjp.proceed();
+
+            if (result instanceof String) {
+                result = makeDespicable((String) result, getNameFrom(pjp.getTarget()));
+            }
+            return result;
+        }
+
+        // ... the rest exactly like DespicableAdvice
+    }
+    ```
+
+    Where the `@Aspect` marks this class as an "aspect."
+
+    The `@Around()` indicates that the `makeDespicable(ProceedingJoinPoint)` method is "around advice."  The value of `@Around()` is a Pointcut Designator (as described in [Spring Framework Reference: Declaring a Pointcut](http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/#aop-pointcuts)).  Here, any Spring Bean whose implementation class is annotated with `@Despicable`.
+
+1. Register the Aspect in the application context.
+
+   Replace the `DefaultPointcutAdvisor` with an instance of our new aspect.  Our aspect now contains both the pointcut _and_ the advice.
+
+   **`DespicableConfig.java`**
+   ```java
+    @Bean
+    public DespicableAspect despicableAspect() {
+        return new DespicableAspect();
+    }
+   ```
+1. Move the `@Despicable` annotation off `You` and onto `Human`.
+
+   The AspectJ pointcut expression respects the fact that annotations cannot be inherited from interfaces.  In order for our "You" bean to match, we need to annotate its implementation: `Human`.
+
+   So, here...
+
+   **`Human.java`**
+   ```java
+    @Despicable
+    public class Human implements You {  ...
+   ```
+
+   Not here...
+
+   **`You.java`**
+   ```java
+    public interface You {
+        String name();
+
+        String claim(String item);
+    }
+   ```
+1. How well does IntelliJ help with identifying what beans/methods are advised?
+
+
+_TODO: Make all beans @Components, improving the IDE experience._
 
