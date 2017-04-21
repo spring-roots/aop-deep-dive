@@ -6,8 +6,10 @@ import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Configuration
+@EnableAspectJAutoProxy
 public class DespicableConfig {
 	@Bean
 	public You you() {
@@ -17,11 +19,6 @@ public class DespicableConfig {
 	@Bean
 	public Me me() {
 		return new Minion("Kevin");
-	}
-
-	@Bean
-	public DefaultAdvisorAutoProxyCreator proxyAllTheBeans() {
-		return new DefaultAdvisorAutoProxyCreator();
 	}
 
 	@Bean
