@@ -4,6 +4,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.core.env.PropertiesPropertySource;
+
+import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -45,7 +48,12 @@ public class DespicableAdviceTest {
 	@Test
 	@DisplayName("You and Me are despicable beans.")
 	public void yieldsDespicableYouAndMeBeans() {
+		Properties names = new Properties();
+		names.setProperty("names.human", "Gru");
+		names.setProperty("names.minion", "Kevin");
+
 		AnnotationConfigApplicationContext appCtx = new AnnotationConfigApplicationContext();
+		appCtx.getEnvironment().getPropertySources().addLast(new PropertiesPropertySource("names", names));
 		appCtx.register(DespicableConfig.class);
 		appCtx.refresh();
 
