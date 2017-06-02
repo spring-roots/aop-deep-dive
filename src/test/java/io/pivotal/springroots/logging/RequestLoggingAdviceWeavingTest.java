@@ -72,6 +72,7 @@ public class RequestLoggingAdviceWeavingTest {
 	}
 
 	@Test
+   @Ignore
 	public void advisesRequestMappings() throws Exception {
 		fakeController.methodWithRequestMapping();
 
@@ -83,6 +84,7 @@ public class RequestLoggingAdviceWeavingTest {
 	}
 
 	@Test
+   @Ignore
 	public void advisesRequestMappingsWithNoReturnValue() throws Exception {
 		fakeController.requestMappingWithNoReturn();
 
@@ -94,18 +96,21 @@ public class RequestLoggingAdviceWeavingTest {
 	}
 
 	@Test
+   @Ignore
 	public void skipsNonRequestMappings() throws Exception {
 		fakeController.methodWithoutRequestMapping();
 		assertThat(logged.output()).isEmpty();
 	}
 
 	@Test
+   @Ignore
 	public void skipsRequestMappingsWithLoggingDisabled() throws Exception {
 		fakeControllerOptingOutOfLogging.methodWithRequestMapping();
 		assertThat(logged.output()).isEmpty();
 	}
 
 	@Test
+   @Ignore
 	public void skipsNonRequestMappingsWithLoggingDisabled() throws Exception {
 		fakeControllerOptingOutOfLogging.methodWithoutRequestMapping();
 		assertThat(logged.output()).isEmpty();
