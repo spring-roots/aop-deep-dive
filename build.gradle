@@ -1,26 +1,12 @@
-buildscript {
-    // JUnit 5 is bleeding edge.
-    ext.milestone = 'M3'   // IntelliJ
-//    ext.milestone = 'M4'     // Gradle on the command-line
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.junit.platform:junit-platform-gradle-plugin:1.0.0-${milestone}"
-    }
-}
-
 repositories {
     mavenCentral()
 }
 
 apply plugin: 'java'
-apply plugin: 'org.junit.platform.gradle.plugin'
-
 
 dependencies {
     compile 'org.assertj:assertj-core:3.6.2'
-    compile 'org.springframework:spring-context:4.3.7.RELEASE'
-    testCompile "org.junit.jupiter:junit-jupiter-api:5.0.0-${milestone}"
-    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.0.0-${milestone}"
+    compile 'org.springframework.boot:spring-boot-starter-web:1.5.3.RELEASE'
+    compile 'org.aspectj:aspectjweaver:1.8.10'
+    compile "org.springframework.boot:spring-boot-starter-test:1.5.3.RELEASE"
 }
