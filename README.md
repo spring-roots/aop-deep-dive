@@ -254,6 +254,15 @@ Spring can do all that work for us!
 
 **Objective:** learn how to register advice and weave it in through proxies automatically created in the Application Context.
 
+> **Word Salad, anyone?**
+>
+> We're about to become steeped in some technical terminology as we move head-long into Aspect-Oriented Programming.
+>
+> If this is your first foray into AOP, you may well find it useful to pause from this deep dive to prime yourself with some basic terminology and concepts.
+>
+> - [Spring Framework Reference: Aspect Oriented Programming with Spring](https://docs.spring.io/spring/docs/current/spring-framework-reference/html/aop.html) — the official guide does an excellent job at defining terms.  At a minimum familiarize yourself with section "11.1 Introduction".
+
+
 
 Indeed, the Application Context can be configured to generate proxies automatically through configuration.  Let's do that.
 
