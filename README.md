@@ -105,6 +105,8 @@ Isn't there a better way?
 
 ## Part 2: Advice on proxies
 
+**Objective:** learn how to apply a given behavior to multiple types by extracting it as "advice" and applying it through a proxy.
+
 The core Spring Framework includes facilities that makes it relatively easy to dynamically create a wrapper around any non-final class.  It does so by creating a class a runtime that `extends` your class.  This wrapper is known as a "proxy."
 
 1. Add Spring Framework as a dependency so we can use the `ProxyFactory` feature:
@@ -249,6 +251,9 @@ This is a definite improvement.  In fact, the proxies that we are creating are e
 Spring can do all that work for us!
 
 ## Part 3: Advice through Spring Auto Proxies
+
+**Objective:** learn how to register advice and weave it in through proxies automatically created in the Application Context.
+
 
 Indeed, the Application Context can be configured to generate proxies automatically through configuration.  Let's do that.
 
@@ -488,3 +493,63 @@ Indeed, the Application Context can be configured to generate proxies automatica
 
    Q: What differences do you see in how IntelliJ treats advice and advised methods?
 
+
+# Part 4: Pragmatic Programming Challenge
+
+**Objective:** go through the process of writing a useful aspect to reinforce the material in this deep-dive and to walk away with a useful chunk of code.
+
+It's now time to put your understanding to the test!
+
+## Background
+
+One common cross-cutting concern is logging.  It's a chunk of behavior that applies in a wide variety of places, cutting across the hierarchies of classes that make up the application.
+
+In a web application, it is reasonable to want to log each web request as it arrives.  It is useful to perform that logging within the controller itself to take advantage of the strongly typed parameters.  In a Spring-based web application, those methods are annotated as `@RequestMapping`.
+
+## The Challenge
+
+In this programming challenge, you will write an aspect that wraps all `@RequestMapping` in two log entries:
+
+ 1. one right before the invocation of the method (including the name of each parameter and corresponding argument value); and
+ 2. another right after the invocation that includes the result.
+
+To access the challenge:
+
+```bash
+$ git clone https://github.com/spring-roots/aop-deep-dive.git
+$ cd aop-deep-dive
+$ git checkout challenge
+```
+
+The challenge is organized as a pair of fully-baked test suites.  Your job is to use these tests to guide your implementation of the aspect.
+
+You will find the following:
+
+In the test source set:
+- `RequestLoggingAdviceTest` — the first suite.  It is focused on the core behavior of the advice.
+- `RequestLoggingAdviceWeavingTest` — the second suite; in fact this suite depends on the aspect being fully functional to verify.  This suite is focused on verifying the pointcut expression.
+- `LoggingSpy` — a testing utility for sniffing application logging.  This is used by the tests to assert on the output of the logging system.
+
+In the main source set:
+- `RequestLoggingAdvice` — a skeleton implementation of the aspect, just enough to satisfy the compiler so that when you run the test suites, the first error is a good test fail (and not a complication error).  You're welcome. :)
+- `DisableRequestLogging` — an annotation used to switch off logging for a given controller.  For example, if you use Spring REST Docs, you probably don't want to log that output, so you'd drop this annotation on those controllers.
+
+To work your way through the challenge:
+
+1. Run the test suite.
+2. Write enough production code to satisfy the test.
+3. (if applicable) refactor
+4. Remove the `@Ignore` from the next test method.  Goto step 1.
+
+Good luck and enjoy!
+
+# Coda: Where to from here?
+
+- Explore out-of-the-box implementations of aspects from Spring
+  - `@ControllerAdvice`
+  - `@Transactional`
+  - `@Retryable`
+  - `@Cacheable`
+- Dive deeper into the topic of Aspect-Oriented Programming:
+  - Lecture: [Aspect-Oriented Programming: Radical Research in Modularity](https://www.youtube.com/watch?v=40Q16Ix-src) (YouTube) — a Google Talk by [Gregor Kiczales](https://en.wikipedia.org/wiki/Gregor_Kiczales).
+  - Book: [AspectJ in Action, Second Edition](https://www.manning.com/books/aspectj-in-action-second-edition) by Ramnivas Laddad
