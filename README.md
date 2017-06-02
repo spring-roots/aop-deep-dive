@@ -235,10 +235,18 @@ The core Spring Framework includes facilities that makes it relatively easy to d
         }
     }
     ```
+    Notice that `DespicableAdvice` can be applied to any kind of class without change!
 
-Notice that `DespicableAdvice` can be applied to any kind of class without change!
+1. Explore the proxy.
 
-That said, we are required to create a proxy, aim it and attach advice for each use.  This repeated work quickly becomes boilerplate.
+    In one of the tests, set a breakpoint on the first `assert()`; fire-up the test in the debugger and explore the proxy.
+
+    1. Use [`AopUtils`](http://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/aop/support/AopUtils.html) to determine which kind of proxy it is (JDK Dynamic? CGLIB?).
+    1. Notice that the proxy implements three (3) interfaces in addition to subclassing our own.  What features do those methods provide?
+
+This is a definite improvement.  In fact, the proxies that we are creating are exactly the creatures you use day-to-day whenever you have a Spring Bean that is advised (e.g. `@Transactional` or `@Retryable`).  That said, we are required to create a proxy, aim it and attach advice for each use.  This repeated work quickly becomes boilerplate.
+
+Spring can do all that work for us!
 
 ## Part 3: Advice through Spring Auto Proxies
 
