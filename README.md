@@ -323,7 +323,12 @@ Indeed, the Application Context can be configured to generate proxies automatica
 
     **Enabling Auto-Proxies**
 
-    The next bean, `DefaultAdvisorAutoProxyCreator`, is supplied by Spring Framework.  It is a `BeanPostProcessor` — a chunk of logic that gets applied to all Spring Beans created in application context.  The mere presence of `DefaultAdvisorAutoProxyCreator` is enough to enable the "Auto Proxy" feature.
+    The next bean, `DefaultAdvisorAutoProxyCreator`, is supplied by Spring Framework.  If you explore its hierarchy, you find that it is a `BeanPostProcessor`.
+
+    When the Application Context is starting up, it examines the list of registered Spring Beans for special types like `BeanPostProcesor`s and puts them on a list for later.  As Spring Beans are constructed inside the Application Context, it pulls out that list of `BeanPostProcessor`s and gives each a chance to modify the Spring Bean before being released to the world.
+
+    In this case, _this_ post processor gets a chance to wrap Spring Beans in a proxy.  In this way, the mere registering an instance of `DefaultAdvisorAutoProxyCreator` is enough to enable the "Auto Proxy" feature.
+
 
     **Registering Advice**
 
