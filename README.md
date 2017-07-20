@@ -459,7 +459,7 @@ We can get even more simple: express all of this configuration in a more concise
     }
     ```
 
-    The `@Aspect` annotation indicates tells the [AspectJ Auto Proxy Creator Bean Post Processor](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/aop/aspectj/annotation/AnnotationAwareAspectJAutoProxyCreator.html) (APC-BPP) that this class contains advice and that the BPP should look for pointcuts have been declared using AspectJ annotations.
+    The `@Aspect` annotation tells the [AspectJ Auto Proxy Creator Bean Post Processor](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/aop/aspectj/annotation/AnnotationAwareAspectJAutoProxyCreator.html) (APC-BPP) that this class contains advice and that the BPP should look for pointcuts have been declared using AspectJ annotations.
 
     We mark `makeDespicable(ProceedingJoinPoint)` as being "around advice" using the `@Around()` annotation.  The value of `@Around()` is a Pointcut Designator (as described in [Spring Framework Reference: Declaring a Pointcut](http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/#aop-pointcuts)).  The APC-BPP will attach this advice to any Spring Bean whose implementation class is annotated with `@Despicable`.
 
