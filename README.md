@@ -438,7 +438,7 @@ We can get even more simple: express all of this configuration in a more concise
 
 1. Declare `DespicableAdvice` as an aspect:
 
-    So that we can continue to use `DespicableAdvice`, we'll make a copy of it and turn it into Advice:
+    Copy `DespicableAdvice` to `DespicableAspect` so that we can compare the two side-by-side.
 
     **`DespicableAspect.java`**
     ```java
